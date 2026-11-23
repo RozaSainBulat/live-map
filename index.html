@@ -6,8 +6,8 @@
 <body><div id="top"><h1>🌍 Resource Trading No.1 — Live Map</h1><div id="f"></div></div><div id="map"></div>
 <details id="sub"><summary>📰 Free Weekly Offers</summary><div>Name<input id="n"><br>WhatsApp or email<input id="c"><br>Country and port<input id="p" placeholder="Ghana Tema"><br>Products <input id="pr" placeholder="A C (A EN590, B Jet, C D6, D Crude, E LPG/LNG, F Sulphur/urea/coke, G Gold, H Sugar/grain/oils)"><br>Procedures <input id="pc" placeholder="P2 P3 (P1 TTT/TTV, P2 Dip&pay, P3 CIF, P4 FOB, P5 LC/SBLC, P6 pay after inspection)"><br>Day <select id="d"><option>Mon<option>Tue<option>Wed<option>Thu<option>Fri<option>Sat<option>Sun</select><br><a class="btn" id="go" href="#" target="_blank">Subscribe by WhatsApp</a></div></details>
 <script>
-const WA="447749836357",CNT="https://api.counterapi.dev/v1/rtn1map/";
-function hit(k){try{fetch(CNT+k+"/up",{mode:"cors"})}catch(e){}}
+const WA="447749836357",CNT="https://abacus.jasoncameron.dev/hit/rtn1map/";
+function hit(k){try{fetch(CNT+k,{mode:"no-cors"})}catch(e){}}
 fetch("data.json?"+Date.now()).then(r=>r.json()).then(D=>{
 const map=L.map("map",{worldCopyJump:true}).setView([20,20],2);L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"© OpenStreetMap"}).addTo(map);
 const layers={},mk={};D.cats.forEach(c=>{layers[c.id]=L.layerGroup().addTo(map);document.getElementById("f").insertAdjacentHTML("beforeend",`<label><input type="checkbox" checked data-c="${c.id}"> ${c.icon} ${c.name}</label>`)});
