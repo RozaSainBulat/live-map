@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Resource Trading No.1 — Live Map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>html,body{margin:0;height:100%;font-family:Arial,sans-serif}#top{background:#5B2D90;color:#fff;padding:8px 12px}#top h1{font-size:18px;margin:0 0 6px}#f label{margin-right:10px;font-size:13px;white-space:nowrap}#map{position:absolute;top:84px;bottom:0;left:0;right:0}
+.dot{border-radius:50%;border:2px solid #fff;box-shadow:0 0 4px #000;width:24px;height:24px;line-height:20px;text-align:center;font-size:13px}.btn{display:inline-block;background:#25D366;color:#fff;padding:6px 10px;border-radius:5px;text-decoration:none;font-weight:bold;margin-top:6px}
+#sub{position:absolute;right:10px;bottom:24px;z-index:1000;background:#fff;border:2px solid #5B2D90;border-radius:8px;padding:8px;width:250px;font-size:12px;max-height:60%;overflow:auto}#sub input,#sub select{width:100%;box-sizing:border-box;margin:2px 0}#sub summary{font-weight:bold;cursor:pointer}</style></head>
+<body><div id="top"><h1>🌍 Resource Trading No.1 — Live Map</h1><div id="f"></div></div><div id="map"></div>
+<details id="sub"><summary>📰 Free Weekly Offers</summary><div>Name<input id="n"><br>WhatsApp or email<input id="c"><br>Country and port<input id="p" placeholder="Ghana Tema"><br>Products <input id="pr" placeholder="A C (A EN590, B Jet, C D6, D Crude, E LPG/LNG, F Sulphur/urea/coke, G Gold, H Sugar/grain/oils)"><br>Procedures <input id="pc" placeholder="P2 P3 (P1 TTT/TTV, P2 Dip&pay, P3 CIF, P4 FOB, P5 LC/SBLC, P6 pay after inspection)"><br>Day <select id="d"><option>Mon<option>Tue<option>Wed<option>Thu<option>Fri<option>Sat<option>Sun</select><br><a class="btn" id="go" href="#" target="_blank">Subscribe by WhatsApp</a></div></details>
+<script>
+const WA="447749836357",CNT="https://api.counterapi.dev/v1/rtn1map/";
+function hit(k){try{fetch(CNT+k+"/up",{mode:"cors"})}catch(e){}}
+fetch("data.json?"+Date.now()).then(r=>r.json()).then(D=>{
+const map=L.map("map",{worldCopyJump:true}).setView([20,20],2);L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"© OpenStreetMap"}).addTo(map);
+const layers={},mk={};D.cats.forEach(c=>{layers[c.id]=L.layerGroup().addTo(map);document.getElementById("f").insertAdjacentHTML("beforeend",`<label><input type="checkbox" checked data-c="${c.id}"> ${c.icon} ${c.name}</label>`)});
+document.querySelectorAll("#f input").forEach(i=>i.onchange=()=>{i.checked?layers[i.dataset.c].addTo(map):map.removeLayer(layers[i.dataset.c])});
+D.points.forEach(p=>{const c=D.cats.find(x=>x.id===p.cat);const ic=L.divIcon({className:"",html:`<div class="dot" style="background:${c.color}">${c.icon}</div>`,iconSize:[24,24]});
+const m=L.marker([p.lat,p.lon],{icon:ic}).addTo(layers[p.cat]);mk[p.code]=m;
+const h=`<b>${p.product}${p.verified?" ✓":""}</b><br>${p.place}${p.exact?"":" (region)"}<br>Terms: ${p.terms}<br>${p.price?"Price: "+p.price+"<br>":""}${p.volume?"Volume: "+p.volume+"<br>":""}<small>${p.code}</small><br><a class="btn" target="_blank" onclick="hit('req-${p.code}')" href="https://wa.me/${WA}?text=${encodeURIComponent("Interested in "+p.code)}">Request SCO</a>`;
+m.bindPopup(h);m.on("popupopen",()=>{hit("open-"+p.code);history.replaceState(null,"","#"+p.code)})});
+function go(){const c=location.hash.slice(1);if(mk[c]){map.setView(mk[c].getLatLng(),6);mk[c].openPopup()}}go();addEventListener("hashchange",go)});
+function upd(){const v=id=>document.getElementById(id).value.trim();const c=v("c"),em=c.includes("@");document.getElementById("go").href="https://wa.me/"+WA+"?text="+encodeURIComponent("WEEKLY "+(em?"2":"1")+", "+(em?c+", ":"")+v("p")+", "+v("pr")+", "+v("pc")+", "+v("d")+(v("n")?" ("+v("n")+")":""))}
+document.querySelectorAll("#sub input,#sub select").forEach(i=>i.oninput=upd);upd();
+</script></body></html>
