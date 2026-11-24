@@ -32,6 +32,7 @@ html,body{margin:0;font-family:Arial,sans-serif;color:#222;background:#fff}
 .shr{margin-top:8px;font-size:12px}.shr a{display:inline-block;margin:2px 3px 0 0;padding:3px 7px;border-radius:12px;color:#fff;text-decoration:none;font-weight:bold}
 .dot.sq,.dot.sq::after{border-radius:5px!important}.plabel{background:rgba(255,255,255,.88);border:1px solid #5B2D90;border-radius:4px;padding:0 4px;font:bold 11px Arial;white-space:nowrap;color:#222;transform:translate(14px,-8px);width:auto}
 #grp label.sub{margin-left:24px;font-size:13px}
+.copy{font-size:12px;opacity:.85;text-align:center;margin:14px auto 0;max-width:720px;line-height:1.35}.cf{background:#3d1a66;color:#fff;opacity:1;margin:0;padding:12px 16px}
 </style></head>
 <body>
 <section id="hero">
@@ -40,6 +41,7 @@ html,body{margin:0;font-family:Arial,sans-serif;color:#222;background:#fff}
 <div class="box" data-t="buyers"></div><div class="box" data-t="sellers"></div><div class="box" data-t="weekly"></div>
 <div class="foot" data-t="foot"></div>
 <div><a class="open" href="#mapwrap" data-t="btn_open"></a></div>
+<div class="copy">© 2026 Roza Truksane · Resource Trading No.1 Live Map · Concept, design and data. All rights reserved.</div>
 </section>
 <section id="how"><h2 data-t="how"></h2><div class="steps" id="steps"></div></section>
 <section id="mapwrap">
@@ -52,6 +54,7 @@ html,body{margin:0;font-family:Arial,sans-serif;color:#222;background:#fff}
 </div>
 <div id="legend"></div>
 </section>
+<footer class="copy cf">© 2026 Roza Truksane · Resource Trading No.1 Live Map · Concept, design and data. All rights reserved.</footer>
 <div class="modal" id="howm"><div class="in"><span class="x" onclick="this.closest('.modal').style.display='none'">×</span><h3 data-t="how"></h3><div class="steps" id="steps2"></div></div></div>
 <div class="modal" id="subm"><div class="in"><span class="x" onclick="this.closest('.modal').style.display='none'">×</span><h3 data-t="m_sub"></h3>
 <div id="sub">Name<input id="n"><br>WhatsApp or email<input id="c"><br>Country and port<input id="p" placeholder="Ghana Tema"><br>Products <input id="pr" placeholder="A C (A EN590, B Jet, C D6, D Crude, E LPG/LNG, F Sulphur/urea/coke, G Gold, H Sugar/grain/oils)"><br>Procedures <input id="pc" placeholder="P2 P3 (P1 TTT/TTV, P2 Dip&pay, P3 CIF, P4 FOB, P5 TTO, P6 other)"><br>Day <select id="d"><option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option><option>Sat</option><option>Sun</option></select><br><a class="btn" id="subgo" target="_blank" href="https://wa.me/447749836357?text=WEEKLY" data-t="subscribe"></a></div></div></div>
@@ -98,7 +101,7 @@ document.getElementById("mhow").onclick=()=>{document.getElementById("howm").sty
 document.getElementById("msub").onclick=()=>{document.getElementById("subm").style.display="flex";menu.style.display="none"};
 applyLang();
 fetch("data.json?"+Date.now()).then(r=>r.json()).then(D=>{
-const map=L.map("map",{worldCopyJump:true,scrollWheelZoom:true,touchZoom:true,doubleClickZoom:true,minZoom:2}).setView([20,20],2);L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"© OpenStreetMap"}).addTo(map);
+const map=L.map("map",{worldCopyJump:true,scrollWheelZoom:true,touchZoom:true,doubleClickZoom:true,minZoom:2}).setView([20,20],2);L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"© OpenStreetMap · © 2026 Roza Truksane"}).addTo(map);
 const layers={},mk={},pts={};D.points.forEach(q=>{if(!layers[q.pk]){layers[q.pk]=L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:45,spiderfyOnMaxZoom:true,zoomToBoundsOnClick:true});if(q.pk!=="TANK")layers[q.pk].addTo(map)}});
 const GD=[["oil","g_oil",["OIL","GAS"],["EN590","D6","JETA1","LPG","LNG","CRUDE","PETCOKE"]],["gold","g_gold",["GOLD"],[]],["fert","g_fert",["FERT"],[]],["other","g_other",null,[]],["tank","g_tank",["TANK"],["TANK"]]];
 const known=new Set(["OIL","GAS","GOLD","FERT","TANK"]);GD[3][2]=D.cats.map(c=>c.id).filter(i=>!known.has(i));
